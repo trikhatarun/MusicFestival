@@ -3,7 +3,6 @@ package com.boundinteractive.eacodingtest.data.util
 import com.boundinteractive.eacodingtest.data.model.MusicFestivalDto
 import com.boundinteractive.eacodingtest.ui.data.Band
 import com.boundinteractive.eacodingtest.ui.data.RecordLabel
-import timber.log.Timber
 
 object DataTransformerUtil {
     fun List<MusicFestivalDto>.sortToMap(): HashMap<String, HashMap<String, ArrayList<String>>> {
