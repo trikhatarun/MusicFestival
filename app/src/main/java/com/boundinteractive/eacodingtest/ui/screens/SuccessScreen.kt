@@ -30,7 +30,7 @@ fun SuccessScreen(data: List<RecordLabel>) {
         ) {
             items(data, itemContent = { item ->
                 if (item.name.isBlank()) {
-                    RecordLabelItem(name = "Unlabelled Bands", bands = item.bands)
+                    RecordLabelItem(name = "Unsigned Artists", bands = item.bands)
                 } else {
                     RecordLabelItem(name = item.name, bands = item.bands)
                 }
