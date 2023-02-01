@@ -41,11 +41,17 @@ class RecordLabelRepository @Inject constructor(retrofit: Retrofit) {
                 }
 
                 override fun onFailure(call: Call<List<MusicFestivalDto>>, t: Throwable) {
-                    recordLabels.tryEmit(
-                        RecordLabelApiResponse.Failure(
-                            t.message ?: "Something went wrong"
+                    if (t is IllegalStateException) {
+                        recordLabels.tryEmit(
+                            RecordLabelApiResponse.Success(emptyList())
                         )
-                    )
+                    } else {
+                        recordLabels.tryEmit(
+                            RecordLabelApiResponse.Failure(
+                                t.message ?: "Something went wrong"
+                            )
+                        )
+                    }
                 }
             })
     }
