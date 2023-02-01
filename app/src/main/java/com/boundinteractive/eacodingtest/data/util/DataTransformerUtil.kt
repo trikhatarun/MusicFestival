@@ -3,6 +3,7 @@ package com.boundinteractive.eacodingtest.data.util
 import com.boundinteractive.eacodingtest.data.model.MusicFestivalDto
 import com.boundinteractive.eacodingtest.ui.data.Band
 import com.boundinteractive.eacodingtest.ui.data.RecordLabel
+import timber.log.Timber
 
 object DataTransformerUtil {
     fun List<MusicFestivalDto>.sortToMap(): HashMap<String, HashMap<String, ArrayList<String>>> {
@@ -10,8 +11,8 @@ object DataTransformerUtil {
         this.forEach {
             val currentFestival = it.name
             it.bands.forEach { band ->
-                if (recordLabelMap.contains(band.recordLabel)) {
-                    val recordLabelsBandsMap = recordLabelMap[band.recordLabel]
+                if (recordLabelMap.contains(band.recordLabel ?: "")) {
+                    val recordLabelsBandsMap = recordLabelMap[band.recordLabel ?: ""]
                         ?: throw Exception("Contains record label with null map")
 
                     if (recordLabelsBandsMap.contains(band.name)) {
@@ -33,20 +34,23 @@ object DataTransformerUtil {
                             currentFestival?.let { festival -> add(festival) }
                         }
                     bandMap[band.name] = festivalList
-                    recordLabelMap[band.recordLabel] = bandMap
+                    recordLabelMap[band.recordLabel ?: ""] = bandMap
                 }
             }
         }
         return recordLabelMap
     }
 
-    fun HashMap<String, HashMap<String, ArrayList<String>>>.convertToList() = this.map {
-        val currentBands = it.value.map { bandMap ->
-            Band(
-                name = bandMap.key,
-                festivals = bandMap.value
-            )
+    fun HashMap<String, HashMap<String, ArrayList<String>>>.convertToList(): List<RecordLabel> {
+        Timber.d("data: $this")
+        return this.map {
+            val currentBands = it.value.map { bandMap ->
+                Band(
+                    name = bandMap.key,
+                    festivals = bandMap.value
+                )
+            }
+            RecordLabel(it.key, currentBands)
         }
-        RecordLabel(it.key, currentBands)
     }
 }

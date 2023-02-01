@@ -4,20 +4,19 @@ import com.boundinteractive.eacodingtest.data.model.MusicFestivalDto
 import com.boundinteractive.eacodingtest.data.util.DataTransformerUtil.convertToList
 import com.boundinteractive.eacodingtest.data.util.DataTransformerUtil.sortToMap
 import com.boundinteractive.eacodingtest.ui.data.RecordLabel
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
-import timber.log.Timber
 import javax.inject.Inject
 
 class RecordLabelRepository @Inject constructor(retrofit: Retrofit) {
 
     private val festivalsApi = retrofit.create(FestivalsApi::class.java)
 
-    val festivals = MutableSharedFlow<RecordLabelApiResponse>()
+    val recordLabels = MutableStateFlow<RecordLabelApiResponse?>(null)
 
     fun getRecordLabels() {
         return festivalsApi
@@ -29,21 +28,24 @@ class RecordLabelRepository @Inject constructor(retrofit: Retrofit) {
                 ) {
                     response.body()?.let {
                         try {
-                            festivals.tryEmit(
+                            recordLabels.tryEmit(
                                 RecordLabelApiResponse.Success(
                                     it.sortToMap().convertToList()
                                 )
                             )
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            festivals.tryEmit(RecordLabelApiResponse.Failure("Success with null body"))
+                            recordLabels.tryEmit(RecordLabelApiResponse.Failure("Data parsing error"))
                         }
                     }
-                        ?: festivals.tryEmit(RecordLabelApiResponse.Failure("Success with null body"))
                 }
 
                 override fun onFailure(call: Call<List<MusicFestivalDto>>, t: Throwable) {
-                    festivals.tryEmit(RecordLabelApiResponse.Failure(t.message ?: "Something went wrong"))
+                    recordLabels.tryEmit(
+                        RecordLabelApiResponse.Failure(
+                            t.message ?: "Something went wrong"
+                        )
+                    )
                 }
             })
     }
