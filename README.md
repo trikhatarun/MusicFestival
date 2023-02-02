@@ -11,4 +11,4 @@ This is coding test app for EA
 # Improvements that can be done
 - FestivalService can be added as part of Service layer to separate local and network data sources
 - FetchFestivalUseCase can be created and data sorting can be moved to use case instead of repository, so that repository layer only fetches/stores data
-- 
+- Currently code only tests data conversion logic, more Unit, integration and UI tests can be added.
