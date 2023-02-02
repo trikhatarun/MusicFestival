@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,10 +23,8 @@ class MainViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             recordLabelRepository.recordLabels.collectLatest {
-                Timber.d("data: api response received")
                 when (it) {
                     is RecordLabelApiResponse.Failure -> {
-                        Timber.d("data: failure")
                         _screenState.emit(
                             MainScreenState.Failure(
                                 it.message
@@ -35,7 +32,6 @@ class MainViewModel @Inject constructor(
                         )
                     }
                     is RecordLabelApiResponse.Success -> {
-                        Timber.d("data: ${it.data}")
                         _screenState.emit(
                             MainScreenState.Success(
                                 it.data
