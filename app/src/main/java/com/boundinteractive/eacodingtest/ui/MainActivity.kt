@@ -1,4 +1,4 @@
-package com.boundinteractive.eacodingtest
+package com.boundinteractive.eacodingtest.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
