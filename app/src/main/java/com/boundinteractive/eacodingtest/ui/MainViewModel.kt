@@ -2,8 +2,8 @@ package com.boundinteractive.eacodingtest.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.boundinteractive.eacodingtest.data.RecordLabelApiResponse
 import com.boundinteractive.eacodingtest.data.RecordLabelRepository
+import com.boundinteractive.eacodingtest.data.service.RecordLabelApiResponse
 import com.boundinteractive.eacodingtest.ui.data.RecordLabel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

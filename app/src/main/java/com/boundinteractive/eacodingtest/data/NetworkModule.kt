@@ -1,5 +1,6 @@
 package com.boundinteractive.eacodingtest.data
 
+import com.boundinteractive.eacodingtest.data.service.FestivalsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,4 +31,8 @@ object NetworkModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
+    @Singleton
+    @Provides
+    fun festivalsApi(retrofit: Retrofit): FestivalsApi = retrofit.create(FestivalsApi::class.java)
 }

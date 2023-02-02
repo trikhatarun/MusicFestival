@@ -1,20 +1,17 @@
 package com.boundinteractive.eacodingtest.data
 
 import com.boundinteractive.eacodingtest.data.model.MusicFestivalDto
+import com.boundinteractive.eacodingtest.data.service.FestivalsApi
+import com.boundinteractive.eacodingtest.data.service.RecordLabelApiResponse
 import com.boundinteractive.eacodingtest.data.util.DataTransformerUtil.convertToList
 import com.boundinteractive.eacodingtest.data.util.DataTransformerUtil.sortToMap
-import com.boundinteractive.eacodingtest.ui.data.RecordLabel
 import kotlinx.coroutines.flow.MutableStateFlow
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.http.GET
 import javax.inject.Inject
 
-class RecordLabelRepository @Inject constructor(retrofit: Retrofit) {
-
-    private val festivalsApi = retrofit.create(FestivalsApi::class.java)
+class RecordLabelRepository @Inject constructor(val festivalsApi: FestivalsApi) {
 
     val recordLabels = MutableStateFlow<RecordLabelApiResponse?>(null)
 
@@ -56,15 +53,5 @@ class RecordLabelRepository @Inject constructor(retrofit: Retrofit) {
             })
     }
 
-}
-
-sealed class RecordLabelApiResponse {
-    class Success(val data: List<RecordLabel>) : RecordLabelApiResponse()
-    class Failure(val message: String) : RecordLabelApiResponse()
-}
-
-interface FestivalsApi {
-    @GET("festivals/")
-    fun getFestivals(): Call<List<MusicFestivalDto>>
 }
 
